@@ -1,4 +1,3 @@
-Descripción del programa Anti-BufferBloat
 Este programa es una herramienta para la administración de red enfocada en la optimización del rendimiento y la reducción del fenómeno conocido como Bufferbloat.
 
 Aquí están las funcionalidades principales del programa:
