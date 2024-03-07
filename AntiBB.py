@@ -2,6 +2,7 @@ import sys
 import subprocess
 import re
 import speedtest
+import requests
 from PySide6.QtWidgets import QApplication, QPushButton, QWidget, QHBoxLayout, QVBoxLayout, QMessageBox, QLabel, QDialog, QTextEdit
 from PySide6.QtGui import QFont, QDesktopServices, QGuiApplication
 from PySide6.QtCore import Qt, QUrl, QThread, Signal
@@ -159,6 +160,9 @@ class App(QWidget):
         self.infoButton = QPushButton('Información sobre Auto-Tuning y RSS', self)
         mainLayout.addWidget(self.infoButton)
 
+        self.updateButton = QPushButton('Verificar actualizaciones', self)
+        mainLayout.addWidget(self.updateButton)
+
         # Connect buttons to their respective functions
         self.activateButton.clicked.connect(lambda: self.toggle_feature(True, "autotuninglevel"))
         self.deactivateButton.clicked.connect(lambda: self.toggle_feature(False, "autotuninglevel"))
@@ -170,6 +174,7 @@ class App(QWidget):
         self.fastButton.clicked.connect(lambda: self.open_website("https://www.fast.com"))
         self.exitButton.clicked.connect(self.close)
         self.infoButton.clicked.connect(self.show_info_dialog)
+        self.updateButton.clicked.connect(self.check_update)
 
     def center(self):
         qr = self.frameGeometry()
@@ -254,12 +259,24 @@ class App(QWidget):
         """
         QMessageBox.information(self, "Éxito", message)
 
+    def check_update(self):
+        try:
+            response = requests.get('https://github.com/marcosstgo/antibufferbloat')
+            latest_version = response.json()['marcosstgo']
+            if latest_version != self.version:
+                QMessageBox.information(self, "Actualización disponible", f"Versión {latest_version} disponible para descargar.")
+                # Aquí podríamos agregar la lógica para descargar la nueva versión
+            else:
+                QMessageBox.information(self, "Sin actualizaciones", "Estás utilizando la versión más reciente.")
+        except Exception as e:
+            QMessageBox.warning(self, "Error", f"Error al verificar actualizaciones: {e}")
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setStyleSheet("""
     QWidget {
-        background-color: #2C2F33;
-        color: #CCCCCC;
+        background-color: #000000;
+        color: #FFFFFF;
     }
     QPushButton {
         background-color: #7289DA;
