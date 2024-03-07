@@ -1,9 +1,9 @@
 import sys
 import subprocess
 import re
-import speedtest
 import requests
-from PySide6.QtWidgets import QApplication, QPushButton, QWidget, QHBoxLayout, QVBoxLayout, QMessageBox, QLabel, QDialog, QTextEdit
+import speedtest
+from PySide6.QtWidgets import QApplication, QPushButton, QWidget, QHBoxLayout, QVBoxLayout, QMessageBox, QLabel, QDialog, QTextEdit, QFileDialog
 from PySide6.QtGui import QFont, QDesktopServices, QGuiApplication
 from PySide6.QtCore import Qt, QUrl, QThread, Signal
 
@@ -85,9 +85,14 @@ class InfoDialog(QDialog):
 class App(QWidget):
     def __init__(self):
         super().__init__()
-        self.version = '1.9'
+        self.version = '2.0'
         self.title = f'Anti-BufferBloat {self.version} - by @m4rcos'
         self.initUI()
+    # Otros métodos y definiciones de clase...
+
+    def run_speed_test_cli(self):
+        # Aquí se crea la instancia de Speedtest
+        s = speedtest.Speedtest()
 
     def initUI(self):
         self.setWindowTitle(self.title)
@@ -149,19 +154,22 @@ class App(QWidget):
         additionalTestsLayout.addWidget(self.bufferbloatTestButton)
         additionalTestsLayout.addWidget(self.fastButton)
 
+        # Nuevo botón para verificar actualizaciones
+        updateButtonLayout = QHBoxLayout()
+        self.updateButton = QPushButton('Verificar actualizaciones de Anti-BufferBloat', self)
+        updateButtonLayout.addWidget(self.updateButton)
+
         mainLayout.addLayout(autoTuningLayout)
         mainLayout.addLayout(rssLayout)
         mainLayout.addLayout(speedTestLayout)
         mainLayout.addLayout(additionalTestsLayout)
+        mainLayout.addLayout(updateButtonLayout)  # Agregar el nuevo botón
 
         self.exitButton = QPushButton('Salir', self)
         mainLayout.addWidget(self.exitButton)
 
         self.infoButton = QPushButton('Información sobre Auto-Tuning y RSS', self)
         mainLayout.addWidget(self.infoButton)
-
-        self.updateButton = QPushButton('Verificar actualizaciones', self)
-        mainLayout.addWidget(self.updateButton)
 
         # Connect buttons to their respective functions
         self.activateButton.clicked.connect(lambda: self.toggle_feature(True, "autotuninglevel"))
@@ -172,9 +180,9 @@ class App(QWidget):
         self.speedTestCliButton.clicked.connect(self.run_speed_test_cli)
         self.bufferbloatTestButton.clicked.connect(lambda: self.open_website("https://www.waveform.com/tools/bufferbloat"))
         self.fastButton.clicked.connect(lambda: self.open_website("https://www.fast.com"))
+        self.updateButton.clicked.connect(self.check_update)  # Conectar el nuevo botón a la función de verificación de actualizaciones
         self.exitButton.clicked.connect(self.close)
         self.infoButton.clicked.connect(self.show_info_dialog)
-        self.updateButton.clicked.connect(self.check_update)
 
     def center(self):
         qr = self.frameGeometry()
@@ -260,16 +268,25 @@ class App(QWidget):
         QMessageBox.information(self, "Éxito", message)
 
     def check_update(self):
-        try:
-            response = requests.get('https://github.com/marcosstgo/antibufferbloat')
-            latest_version = response.json()['marcosstgo']
-            if latest_version != self.version:
-                QMessageBox.information(self, "Actualización disponible", f"Versión {latest_version} disponible para descargar.")
-                # Aquí podríamos agregar la lógica para descargar la nueva versión
-            else:
-                QMessageBox.information(self, "Sin actualizaciones", "Estás utilizando la versión más reciente.")
-        except Exception as e:
-            QMessageBox.warning(self, "Error", f"Error al verificar actualizaciones: {e}")
+            try:
+                response = requests.get('https://raw.githubusercontent.com/marcosstgo/antibufferbloat/main/update_info.json')
+                if response.status_code == 200:
+                    latest_version = response.json()['version']
+                    if latest_version != self.version:
+                        reply = QMessageBox.question(self, "Actualización disponible", f"Versión {latest_version} disponible para descargar. ¿Desea actualizar ahora?",
+                                                    QMessageBox.Yes | QMessageBox.No)
+                        if reply == QMessageBox.Yes:
+                            download_url = response.json()['download_url']
+                            save_path, _ = QFileDialog.getSaveFileName(self, "Guardar archivo", "archivo_nuevo.exe", "Ejecutable (*.exe)")
+                            if save_path:
+                                urlretrieve(download_url, save_path)
+                                QMessageBox.information(self, "Descarga completa", "La actualización se ha descargado correctamente.")
+                    else:
+                        QMessageBox.information(self, "Sin actualizaciones", "Estás utilizando la versión más reciente.")
+                else:
+                    QMessageBox.warning(self, "Error", "No se pudo verificar las actualizaciones. Código de estado HTTP no válido.")
+            except Exception as e:
+                QMessageBox.warning(self, "Error", f"Error al verificar actualizaciones: {e}")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
