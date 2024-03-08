@@ -3,6 +3,7 @@ import subprocess
 import re
 import requests
 import speedtest
+from urllib.request import urlretrieve
 from PySide6.QtWidgets import QApplication, QPushButton, QWidget, QHBoxLayout, QVBoxLayout, QMessageBox, QLabel, QDialog, QTextEdit, QFileDialog
 from PySide6.QtGui import QFont, QDesktopServices, QGuiApplication
 from PySide6.QtCore import Qt, QUrl, QThread, Signal
@@ -85,7 +86,7 @@ class InfoDialog(QDialog):
 class App(QWidget):
     def __init__(self):
         super().__init__()
-        self.version = '2.0'
+        self.version = '2.1'
         self.title = f'Anti-BufferBloat {self.version} - by @m4rcos'
         self.initUI()
     # Otros métodos y definiciones de clase...
@@ -156,7 +157,7 @@ class App(QWidget):
 
         # Nuevo botón para verificar actualizaciones
         updateButtonLayout = QHBoxLayout()
-        self.updateButton = QPushButton('Verificar actualizaciones de Anti-BufferBloat', self)
+        self.updateButton = QPushButton('Actualizar Anti-BufferBloat', self)
         updateButtonLayout.addWidget(self.updateButton)
 
         mainLayout.addLayout(autoTuningLayout)
@@ -165,11 +166,11 @@ class App(QWidget):
         mainLayout.addLayout(additionalTestsLayout)
         mainLayout.addLayout(updateButtonLayout)  # Agregar el nuevo botón
 
+        self.infoButton = QPushButton('Sobre Auto-Tuning y RSS', self)
+        mainLayout.addWidget(self.infoButton)
+
         self.exitButton = QPushButton('Salir', self)
         mainLayout.addWidget(self.exitButton)
-
-        self.infoButton = QPushButton('Información sobre Auto-Tuning y RSS', self)
-        mainLayout.addWidget(self.infoButton)
 
         # Connect buttons to their respective functions
         self.activateButton.clicked.connect(lambda: self.toggle_feature(True, "autotuninglevel"))
@@ -268,25 +269,41 @@ class App(QWidget):
         QMessageBox.information(self, "Éxito", message)
 
     def check_update(self):
-            try:
-                response = requests.get('https://raw.githubusercontent.com/marcosstgo/antibufferbloat/main/update_info.json')
-                if response.status_code == 200:
-                    latest_version = response.json()['version']
-                    if latest_version != self.version:
-                        reply = QMessageBox.question(self, "Actualización disponible", f"Versión {latest_version} disponible para descargar. ¿Desea actualizar ahora?",
-                                                    QMessageBox.Yes | QMessageBox.No)
-                        if reply == QMessageBox.Yes:
-                            download_url = response.json()['download_url']
-                            save_path, _ = QFileDialog.getSaveFileName(self, "Guardar archivo", "archivo_nuevo.exe", "Ejecutable (*.exe)")
-                            if save_path:
-                                urlretrieve(download_url, save_path)
-                                QMessageBox.information(self, "Descarga completa", "La actualización se ha descargado correctamente.")
-                    else:
-                        QMessageBox.information(self, "Sin actualizaciones", "Estás utilizando la versión más reciente.")
+        try:
+            response = requests.get('https://raw.githubusercontent.com/marcosstgo/antibufferbloat/main/update_info.json')
+            if response.status_code == 200:
+                latest_version = response.json()['version']
+                if latest_version != self.version:
+                    reply = QMessageBox.question(self, "Actualización disponible", f"Versión {latest_version} disponible para descargar. ¿Desea actualizar ahora?",
+                                                QMessageBox.Yes | QMessageBox.No)
+                    if reply == QMessageBox.Yes:
+                        download_url = response.json()['download_url']
+                        save_path, _ = QFileDialog.getSaveFileName(self, "Guardar archivo", "anti-bufferbloat.exe", "Ejecutable (*.exe)")
+                        if save_path:
+                            self.download_thread = DownloadThread(download_url, save_path)
+                            self.download_thread.finished.connect(self.download_finished)
+                            self.download_thread.start()
                 else:
-                    QMessageBox.warning(self, "Error", "No se pudo verificar las actualizaciones. Código de estado HTTP no válido.")
-            except Exception as e:
-                QMessageBox.warning(self, "Error", f"Error al verificar actualizaciones: {e}")
+                    QMessageBox.information(self, "Sin actualizaciones", "Estás utilizando la versión más reciente.")
+            else:
+                QMessageBox.warning(self, "Error", "No se pudo verificar las actualizaciones. Código de estado HTTP no válido.")
+        except Exception as e:
+            QMessageBox.warning(self, "Error", f"Error al verificar actualizaciones: {e}")
+
+    def download_finished(self, save_path):
+        QMessageBox.information(self, "Descarga completa", "La actualización se ha descargado correctamente. Cierra esta aplicación y abre la nueva.")
+
+class DownloadThread(QThread):
+    finished = Signal(str)
+
+    def __init__(self, download_url, save_path):
+        super().__init__()
+        self.download_url = download_url
+        self.save_path = save_path
+
+    def run(self):
+        urlretrieve(self.download_url, self.save_path)
+        self.finished.emit(self.save_path)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
@@ -300,7 +317,7 @@ if __name__ == '__main__':
         color: #FFFFFF;
         border-radius: 5px;
         padding: 10px;
-        margin: 2px;
+        margin: 1px;
         border: none;
     }
     QPushButton:hover {
