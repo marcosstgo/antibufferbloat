@@ -1,13 +1,14 @@
 ![image](https://github.com/marcosstgo/antibufferbloat/assets/50328367/9dc5ac8b-a83f-4c9b-9218-a549a72df838)
 
-Este programa es una herramienta para la administración de red enfocada en la optimización del rendimiento y la reducción del fenómeno conocido como Bufferbloat.
+Este programa es una herramienta para la administración de red enfocada en la optimización del rendimiento y la reducción del fenómeno conocido como Bufferbloat para Windows sin la necesidad de utilizar un router.
 
 Aquí están las funcionalidades principales del programa:
 
 Habilitar/Deshabilitar Auto-Tuning:
 
-Auto-Tuning es una función del sistema operativo que ajusta el tamaño del búfer de recepción para optimizar el tráfico de red.
-El programa permite activar o desactivar esta característica para adaptarla a las necesidades del usuario.
+Auto-Tuning es una función del sistema operativo que ajusta el tamaño del búfer de recepción para optimizar el tráfico de red, pero en ocasiones no es necesario tenerlo en estado normal.
+El programa permite activar o desactivar esta característica para adaptarla a las necesidades del usuario, en este caso mejorar el bufferbloat.
+
 Habilitar/Deshabilitar RSS (Receive Side Scaling):
 
 RSS es una funcionalidad de la tarjeta de red que distribuye el procesamiento de paquetes de red entre varios núcleos del procesador, mejorando teóricamente el rendimiento.
