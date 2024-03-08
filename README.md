@@ -1,4 +1,6 @@
-![image](https://github.com/marcosstgo/antibufferbloat/assets/50328367/9dc5ac8b-a83f-4c9b-9218-a549a72df838)
+![anti-bufferbloat-2-1](https://github.com/marcosstgo/antibufferbloat/assets/50328367/aba70213-7038-42c2-848d-1bc36a528a9a)
+
+
 
 1. Interfaz gráfica de usuario (GUI):
    - Diseñada con PySide6 para crear una interfaz amigable.
