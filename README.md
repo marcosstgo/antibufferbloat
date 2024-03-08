@@ -1,33 +1,31 @@
 ![image](https://github.com/marcosstgo/antibufferbloat/assets/50328367/9dc5ac8b-a83f-4c9b-9218-a549a72df838)
 
-Este programa es una herramienta para la administración de red enfocada en la optimización del rendimiento y la reducción del fenómeno conocido como Bufferbloat para Windows sin la necesidad de utilizar un router.
+1. Interfaz gráfica de usuario (GUI):
+   - Diseñada con PySide6 para crear una interfaz amigable.
+   - Presenta botones para activar/desactivar Auto-Tuning y RSS, ejecutar pruebas de velocidad, abrir sitios web de pruebas, mostrar información y verificar actualizaciones.
+   - Muestra el estado actual de Auto-Tuning y RSS, el ping en tiempo real y el progreso de las pruebas de velocidad.
 
-Aquí están las funcionalidades principales del programa:
+2. Funciones de red:
+   - Utiliza el comando `netsh` de Windows para modificar la configuración de red, como Auto-Tuning y RSS.
+   - Ejecuta pruebas de velocidad utilizando la biblioteca Speedtest.
+   - Actualiza periódicamente el ping a través de un hilo (thread) separado.
+   - Comprueba actualizaciones a través de una API online.
 
-Habilitar/Deshabilitar Auto-Tuning:
+3. Funcionalidades esenciales:
+   - **Activar/Desactivar Auto-Tuning:** Permite ajustar la gestión del buffer de recepción TCP para optimizar el rendimiento de la red.
+   - **Activar/Desactivar RSS:** Habilita la distribución del procesamiento de paquetes de red en múltiples procesadores, mejorando la eficiencia.
+   - **Pruebas de velocidad:** Ofrece opciones para realizar pruebas de velocidad a través de speedtest.net, speedtest-cli, Waveform.com y Fast.com.
+   - **Información sobre Auto-Tuning y RSS:** Ofrece una ventana de diálogo con información detallada sobre estas funciones.
+   - **Actualizaciones:** Verifica automáticamente la disponibilidad de actualizaciones y permite descargarlas.
 
-Auto-Tuning es una función del sistema operativo que ajusta el tamaño del búfer de recepción para optimizar el tráfico de red, pero en ocasiones no es necesario tenerlo en estado normal.
-El programa permite activar o desactivar esta característica para adaptarla a las necesidades del usuario, en este caso mejorar el bufferbloat.
+Puntos a destacar:
 
-Habilitar/Deshabilitar RSS (Receive Side Scaling):
+- **Diseño visual:** La aplicación presenta un diseño oscuro con botones azules y texto blanco, proporcionando una estética visual agradable.
+- **Funcionalidad para RSS:** Incluye la capacidad de activar o desactivar RSS, una función que puede mejorar el rendimiento de la red en sistemas con múltiples procesadores.
+- **Actualizaciones automáticas:** Incorpora un mecanismo para verificar y descargar actualizaciones automáticamente, asegurando que la aplicación se mantenga al día con las mejoras.
 
-RSS es una funcionalidad de la tarjeta de red que distribuye el procesamiento de paquetes de red entre varios núcleos del procesador, mejorando teóricamente el rendimiento.
-La aplicación permite activar o desactivar esta opción para controlarla según las necesidades.
-Visualizar estado de Auto-Tuning y RSS:
+Recuerda que:
 
-La aplicación muestra el estado actual de Auto-Tuning y RSS en la red.
-Prueba de Ping:
+- La modificación de la configuración de red a través de esta aplicación podría impactar en el rendimiento de tu conexión. Se recomienda utilizar la aplicación con precaución y entender los efectos de los cambios realizados.
+- Si experimentas problemas de red, es recomendable consultar con un experto en redes o tu proveedor de servicios de internet.
 
-Mide el tiempo de respuesta (ping) a un servidor específico, siendo un indicador básico de la latencia de la red.
-Speedtest (SpeedTest-Cli):
-
-Permite realizar un test de velocidad de internet mediante la librería SpeedTest, ofreciendo información sobre la velocidad de descarga y subida.
-Prueba Bufferbloat (Waveform):
-
-Abre el enlace del test Bufferbloat en Waveform.com, el cual permite diagnosticar la presencia y severidad del Bufferbloat en la red.
-Información sobre Auto-Tuning y RSS:
-
-Muestra una ventana con información detallada sobre las funciones Auto-Tuning y RSS, incluyendo su propósito y posibles efectos en la red.
-Bufferbloat es un problema de red que causa un aumento repentino en la latencia (tiempo de respuesta) cuando hay tráfico intenso de subida o bajada de datos. Esto puede afectar negativamente a aplicaciones sensibles a la latencia como juegos en línea, videollamadas y VoIP.
-
-Este programa es una herramienta útil para usuarios que desean optimizar su red y potencialmente reducir el Bufferbloat ajustando las funciones Auto-Tuning y RSS. Es importante tener en cuenta que la activación o desactivación de estas características puede tener efectos variables dependiendo de la configuración específica de la red y el hardware.
