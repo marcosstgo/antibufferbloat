@@ -2,32 +2,48 @@
 
 
 
-1. Interfaz gráfica de usuario (GUI):
-   - Diseñada con PySide6 para crear una interfaz amigable.
-   - Presenta botones para activar/desactivar Auto-Tuning y RSS, ejecutar pruebas de velocidad, abrir sitios web de pruebas, mostrar información y verificar actualizaciones.
-   - Muestra el estado actual de Auto-Tuning y RSS, el ping en tiempo real y el progreso de las pruebas de velocidad.
+Anti-BufferBloat 3.0
+Anti-BufferBloat 3.0 is an application designed to optimize your network performance by managing TCP/IP settings, specifically focusing on reducing latency and improving overall connection stability. It is particularly useful for gamers and users who require a stable and fast internet connection.
 
-2. Funciones de red:
-   - Utiliza el comando `netsh` de Windows para modificar la configuración de red, como Auto-Tuning y RSS.
-   - Ejecuta pruebas de velocidad utilizando la biblioteca Speedtest.
-   - Actualiza periódicamente el ping a través de un hilo (thread) separado.
-   - Comprueba actualizaciones a través de una API online.
+Disclaimer: This application is not a hacking tool. It is intended solely for legitimate purposes of improving network performance. The code and operations performed by this application are safe and legal. The application does not access or modify any system files or user data without explicit permission.
 
-3. Funcionalidades esenciales:
-   - **Activar/Desactivar Auto-Tuning:** Permite ajustar la gestión del buffer de recepción TCP para optimizar el rendimiento de la red.
-   - **Activar/Desactivar RSS:** Habilita la distribución del procesamiento de paquetes de red en múltiples procesadores, mejorando la eficiencia.
-   - **Pruebas de velocidad:** Ofrece opciones para realizar pruebas de velocidad a través de speedtest.net, speedtest-cli, Waveform.com y Fast.com.
-   - **Información sobre Auto-Tuning y RSS:** Ofrece una ventana de diálogo con información detallada sobre estas funciones.
-   - **Actualizaciones:** Verifica automáticamente la disponibilidad de actualizaciones y permite descargarlas.
+Features
+* Real-Time Network Status: Displays current ping, external and internal IP addresses.
+* TCP Auto-Tuning: Allows users to enable or disable TCP Window Auto-Tuning to manage buffer sizes dynamically.
+* Receive-Side Scaling (RSS): Provides options to enable or disable RSS for better CPU load distribution during network packet processing.
+* Speed Test Integration: Links to external speed test services such as Speedtest.net and Fast.com for measuring network speeds.
+* BufferBloat Test: Provides a quick link to perform a bufferbloat test via waveform.com.
+* Ping and IP Update: Real-time updates of ping and IP addresses.
+* Status Display: Shows the status of TCP Auto-Tuning and RSS in real-time.
 
-Puntos a destacar:
+Technical Details
+Programming Language: C#
+Framework: .NET Framework (requires installation on the target machine)
+IDE: Visual Studio
+Network Management: Uses Windows' netsh commands for network configuration
+Ping and IP Retrieval: Implements System.Net.NetworkInformation for network interface data and ping commands
 
-- **Diseño visual:** La aplicación presenta un diseño oscuro con botones azules y texto blanco, proporcionando una estética visual agradable.
-- **Funcionalidad para RSS:** Incluye la capacidad de activar o desactivar RSS, una función que puede mejorar el rendimiento de la red en sistemas con múltiples procesadores.
-- **Actualizaciones automáticas:** Incorpora un mecanismo para verificar y descargar actualizaciones automáticamente, asegurando que la aplicación se mantenga al día con las mejoras.
+How to Use
+Download and Install: Ensure you have the .NET Framework installed on your machine.
+Run the Application: Execute the application, and you will see the main interface with various buttons and status displays.
 
-Recuerda que:
+Optimize Your Network:
+Click on Normal Auto-Tuning or Disable Auto-Tuning to manage TCP Window Auto-Tuning.
+Use Enable RSS or Disable RSS to control Receive-Side Scaling.
+Speedtest.net and Fast.com buttons will open your default browser to their respective speed test pages.
+BufferBloat Test will link you to waveform.com for a bufferbloat test.
+Check Real-Time Status: The status section at the top of the window provides real-time updates of your network settings, ping, and IP addresses.
 
-- La modificación de la configuración de red a través de esta aplicación podría impactar en el rendimiento de tu conexión. Se recomienda utilizar la aplicación con precaución y entender los efectos de los cambios realizados.
-- Si experimentas problemas de red, es recomendable consultar con un experto en redes o tu proveedor de servicios de internet.
+Safety and Privacy
+Non-Malicious: This application does not perform any malicious activities. It does not collect, store, or transmit user data.
+Network Management: All network optimizations are performed using standard Windows commands and are reversible.
+Open Source: The source code is available on GitHub for transparency and community review. Contributions and suggestions are welcome.
 
+Contributions
+Contributions are welcome! Feel free to fork the repository and submit pull requests. For major changes, please open an issue first to discuss what you would like to change.
+
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+Contact
+For support or inquiries, please contact Marcos Santiago at hello@marcossantiago.com
