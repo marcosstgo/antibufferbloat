@@ -1,4 +1,5 @@
-![anti-bufferbloat-2-1](https://github.com/marcosstgo/antibufferbloat/assets/50328367/c1e8705f-ced3-4b04-b5ce-27074e0bc39a)
+![image](https://github.com/user-attachments/assets/0de4841c-83e5-43d9-aa02-9eb1791c3c4f)
+
 
 
 1. Interfaz gráfica de usuario (GUI):
